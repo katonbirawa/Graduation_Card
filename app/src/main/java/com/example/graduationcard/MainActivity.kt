@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
@@ -15,9 +16,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.focus.focusModifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,9 +33,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             GraduationCardTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    GreetingText(
-                        message = "Happy Graduation Katon",
-                        sender = "From Birawa",
+                    GreetingImage(
+                        message = stringResource(R.string.UcapanGraduation),
+                        sender = stringResource(R.string.Pengirim),
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
@@ -47,21 +49,15 @@ fun GreetingText(message: String, sender : String, modifier : Modifier = Modifie
     Column (
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier.padding(8.dp)
+        modifier = modifier
+            .padding(8.dp)
             .fillMaxSize()
-            .background(
-                brush = Brush.linearGradient(
-                    colors = listOf(Color(0xFF6A5ACD), Color(0xFFFF69B4)),
-                    start = Offset(0f, 0f),
-                    end = Offset(1000f, 1000f)
-                )
-            )
 
     ){
 
         Text(
             text = message,
-            fontSize = 74.sp,
+            fontSize = 70.sp,
             lineHeight = 110.sp,
             textAlign = TextAlign.Center
 
@@ -71,7 +67,9 @@ fun GreetingText(message: String, sender : String, modifier : Modifier = Modifie
         Text(
             text = sender,
             fontSize = 28.sp,
-            modifier = Modifier.padding(16.dp).align(Alignment.End)
+            modifier = Modifier
+                .padding(16.dp)
+                .align(Alignment.End)
         )
 
         Text(
@@ -82,10 +80,33 @@ fun GreetingText(message: String, sender : String, modifier : Modifier = Modifie
         )
     }
 }
-@Preview(showBackground = false)
+@Composable
+fun GreetingImage(message: String, sender: String, modifier: Modifier = Modifier) {
+    val image = painterResource(id = R.drawable.mobile)
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+    ) {
+        Image(
+            painter = image,
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize()
+        )
+
+        GreetingText(
+            message = message,
+            sender = sender,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp)
+        )
+    }
+}
+@Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     GraduationCardTheme {
-        GreetingText("Happy Graduation Katon", sender = "From Birawa")
+        GreetingImage("Happy Graduation Katon", sender = "From Birawa")
     }
 }
